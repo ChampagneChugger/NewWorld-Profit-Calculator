@@ -1,0 +1,224 @@
+@font-face {
+    font-family: nw;
+    src: url(/src/lib/fonts/IMFellDWPica-Regular.ttf);
+}
+
+* {
+    font-family: nw;
+    margin: 0px;
+    padding: 0px;
+}
+
+::selection {
+    color: var(--background-color);
+    background-color: var(--color-text);
+}
+
+:root {
+    --background-color: #121212;
+    --color-text: #d4cfc4;
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    height: 100vh;
+    color: var(--color-text);
+}
+
+.home h1 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.home .resources {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 25px;
+}
+
+.resources a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 15px;
+    padding: 20px;
+    text-decoration: none;
+    border: 1px solid var(--color-text);
+    transition: 0.3s;
+}
+
+.resources a:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.2);
+}
+
+.resources a img {
+    width: 400px;
+}
+
+.resources a hr {
+    width: 100%;
+    border: 0px;
+    height: 1px;
+    background-color: var(--color-text);
+}
+
+.resources a p {
+    color: var(--color-text);
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.back {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    padding: 15px;
+    border-radius: 15px 15px;
+    gap: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--background-color);
+    background-color: var(--color-text);
+}
+
+.back svg {
+    font-size: 30px;
+}
+
+.back:hover span {
+    display: block;
+}
+
+.back span {
+    display: none;
+}
+
+.resource-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin: 40px auto 0px auto;
+    width: 60%;
+}
+
+.resource-options {
+    display: grid;
+    grid-template-rows: auto;
+    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.resource-options button {
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    padding: 20px 0px;
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.active {
+    color: var(--background-color) !important;
+    background-color: var(--color-text) !important;
+}
+
+.components-wrapper {
+    border: 1px solid var(--color-text);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.components-wrapper h1 {
+    color: var(--color-text);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.components {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+}
+
+.components .component {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid var(--color-text);
+    border-radius: 15px;
+    color: var(--color-text);
+}
+
+.components .component img {
+    max-width: 100%;
+}
+
+.components .component h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.components .component .input-group {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.components .component .input-group input {
+    font-family: "Verdana";
+    font-size: 16px;
+    padding: 5px;
+    background-color: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    outline: none;
+}
+
+.components-wrapper form button {
+    margin-top: 20px;
+    background-color: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.crafting-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 20px;
+}
+
+.calculate-wrapper h1 {
+    color: var(--color-text);
+}

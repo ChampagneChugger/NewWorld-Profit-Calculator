@@ -1,0 +1,11 @@
+[
+    {
+        "name": "charcoal",
+        "recipe": [
+            {
+                "name": "wooden_coin",
+                "amount": 0.1
+            }
+        ]
+    }
+]

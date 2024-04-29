@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Charcoal",
+    "slug": "charcoal",
+    "image": "charcoal.png",
+    "market_price": 0.12,
+    "chance_for_extra": 35
+  }
+]
