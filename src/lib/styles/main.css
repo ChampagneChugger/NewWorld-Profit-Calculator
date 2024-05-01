@@ -17,6 +17,10 @@
 :root {
     --background-color: #121212;
     --color-text: #d4cfc4;
+    --toastContainerTop: auto;
+    --toastContainerRight: auto;
+    --toastContainerBottom: 20px;
+    --toastContainerRight: 20px;
 }
 
 body {
@@ -176,6 +180,7 @@ body {
 
 .components .component img {
     max-width: 100%;
+    padding: 20px 0px;
 }
 
 .components .component h2 {
@@ -185,11 +190,15 @@ body {
 
 .components .component .input-group {
     width: 100%;
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.components .component .input-group:first-of-type {
+    padding: 20px;
 }
 
 .components .component .input-group input {
@@ -210,6 +219,12 @@ body {
     padding: 10px;
     cursor: pointer;
     font-size: 16px;
+    transition: 0.3s;
+}
+
+.components-wrapper form button:hover {
+    color: var(--background-color);
+    background-color: var(--color-text);
 }
 
 .crafting-wrapper {
@@ -221,4 +236,19 @@ body {
 
 .calculate-wrapper h1 {
     color: var(--color-text);
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--color-text);
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
 }
