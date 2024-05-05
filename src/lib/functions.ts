@@ -135,14 +135,12 @@ function getStats(resource: string, amount: number, final_item: FormDataEntryVal
 
     let resourceItem: resource | undefined = getResource(recipe[0].name)
 
-    let itemsCrafted: number = 0
+    const itemsUsed: number = Number(amount)
 
     while (recipe.length > 0) {
         const canCraft: number = Math.floor(Number(amount) / recipe[0].recipe[0].amount)
         //@ts-expect-error Goofy TS
-        const willGet: number = Math.floor(canCraft * (1 + resourceItem.chance_for_extra / 100))
-
-        itemsCrafted = willGet
+        amount = Math.floor(canCraft * (1 + resourceItem.chance_for_extra / 100))
 
         recipe = getRecipes().filter(item => item.recipe.find(item => item.name == resourceItem?.slug))
 
@@ -154,13 +152,13 @@ function getStats(resource: string, amount: number, final_item: FormDataEntryVal
     }
 
     return {
-        itemsCrafted,
+        itemsCrafted: amount,
         //@ts-expect-error Goofy TS
-        moneyInvested: (getComponent(resource)?.market_price * amount).toFixed(2),
-        itemsUsed: Number(amount),
+        moneyInvested: (getComponent(resource)?.market_price * itemsUsed).toFixed(2),
+        itemsUsed,
         //@ts-expect-error Goofy TS
-        revenue: (getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted).toFixed(2),
+        revenue: (getResource(final_item?.toString() ?? "")?.market_price * amount).toFixed(2),
         //@ts-expect-error Goofy TS
-        profit: (getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted - getComponent(resource)?.market_price * amount).toFixed(2)
+        profit: (getResource(final_item?.toString() ?? "")?.market_price * amount - getComponent(resource)?.market_price * itemsUsed).toFixed(2)
     }
 }
