@@ -156,11 +156,11 @@ function getStats(resource: string, amount: number, final_item: FormDataEntryVal
     return {
         itemsCrafted,
         //@ts-expect-error Goofy TS
-        moneyInvested: getComponent(resource)?.market_price * amount,
+        moneyInvested: (getComponent(resource)?.market_price * amount).toFixed(2),
         itemsUsed: Number(amount),
         //@ts-expect-error Goofy TS
-        revenue: getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted,
+        revenue: (getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted).toFixed(2),
         //@ts-expect-error Goofy TS
-        profit: getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted - getComponent(resource)?.market_price * amount
+        profit: (getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted - getComponent(resource)?.market_price * amount).toFixed(2)
     }
 }
