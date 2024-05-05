@@ -19,8 +19,10 @@
 	<h1>Select a resource</h1>
 	<div class="resources">
 		{#if items.length > 0}
-			{#each items as { name, slug, image }}
-				<Resource resource={{ name, slug, image }} />
+			{#each items as { name, slug, image, show }}
+				{#if show == true}
+					<Resource resource={{ name, slug, image }} />
+				{/if}
 			{/each}
 		{/if}
 	</div>

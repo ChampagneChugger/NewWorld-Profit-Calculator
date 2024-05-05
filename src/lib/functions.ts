@@ -1,4 +1,4 @@
-import type { resource, recipe, recipeItem, component } from "$lib/types/all"
+import type { resource, recipe, recipeItem, component, result } from "$lib/types/all"
 
 export function getResources(): resource[] {
     return JSON.parse(localStorage.getItem("items") ?? "")
@@ -24,6 +24,12 @@ function getComponents(): component[] {
     return JSON.parse(localStorage.getItem("components") ?? "")
 }
 
+function getComponent(component: string): component | undefined {
+    const components = getComponents()
+
+    return components.find(item => item.slug == component)
+}
+
 export function getComponentsForResource(resource: string): component[] {
     const components = getComponents()
     const componentsNeeded = getRecipe(resource)
@@ -39,6 +45,20 @@ export function getComponentsForResource(resource: string): component[] {
     }
 
     return componentsToReturn
+}
+
+export function getRelatedResourcesAndComponents(resource: string): resource[] {
+    let recipeItem: recipe[] | undefined = getRecipe(resource)
+    const resources: resource[] = []
+
+    while (recipeItem) {
+        const resource = getResource(recipeItem[0].name) ?? getComponent(recipeItem[0].name)
+        //@ts-expect-error I don't know how to define this type
+        resources.push(resource)
+        recipeItem = getRecipe(recipeItem[0].name)
+    }
+
+    return resources
 }
 
 export function updateResource(event: SubmitEvent) {
@@ -62,6 +82,24 @@ export function updateResource(event: SubmitEvent) {
     }
 }
 
+export function updateRelatedResources(event: SubmitEvent) {
+    const formElement: HTMLFormElement = event.target as HTMLFormElement
+
+    const formData = new FormData(formElement)
+
+    const items = getResources()
+
+    formData.forEach((value, name) => {
+        const splitValues = name.split("-")
+
+        const itemIndex: number = items.findIndex(item => item.slug == splitValues[1])
+
+        items[itemIndex].chance_for_extra = Number(value)
+
+        localStorage.setItem("items", JSON.stringify(items))
+    })
+}
+
 export function updateComponents(event: SubmitEvent) {
     const formElement: HTMLFormElement = event.target as HTMLFormElement
 
@@ -69,40 +107,60 @@ export function updateComponents(event: SubmitEvent) {
 
     const components = getComponents()
 
-    for (const pair of formData.entries()) {
-        const componentIndex: number = components.findIndex(item => item.slug == pair[0])
+    formData.forEach((value, name) => {
+        const splitValues = name.split("-")
 
-        components[componentIndex].market_price = Number(pair[1])
+        const componentIndex: number = components.findIndex(item => item.slug == splitValues[1])
+
+        components[componentIndex].market_price = Number(value)
 
         localStorage.setItem("components", JSON.stringify(components))
-    }
+    })
 }
 
-export function calculateCharcoalProfit(event: SubmitEvent) {
+export function calculateProfit(event: SubmitEvent): result {
     const formElement: HTMLFormElement = event.target as HTMLFormElement
 
     const formData = new FormData(formElement)
 
-    const resource = getResource("charcoal")
-    const components = getComponents()
+    const final_item: FormDataEntryValue | null = formData.get("final_item")
 
-    if (resource) {
-        for (const pair of formData.entries()) {
-            const componentIndex: number = components.findIndex(item => item.slug == pair[0])
+    const [name, amount] = formData.entries().next().value
 
-            const amountOfCoins: number = Number(pair[1])
-            const costOfCoins: number = Number((amountOfCoins * components[componentIndex].market_price).toFixed(2))
-            const charcoalAmount: number = Math.floor((amountOfCoins * 10) * (1 + resource.chance_for_extra / 100))
-            const charcoalRevenue: number = Number((charcoalAmount * resource.market_price).toFixed(2))
-            const earnings: number = Number((charcoalRevenue - costOfCoins).toFixed(2))
+    return getStats(name, amount, final_item)
+}
 
-            return {
-                amountOfCoins,
-                costOfCoins,
-                charcoalAmount,
-                charcoalRevenue,
-                earnings
-            }
+function getStats(resource: string, amount: number, final_item: FormDataEntryValue | null): result {
+    let recipe = getRecipes().filter(item => item.recipe.find(item => item.name == resource))
+
+    let resourceItem: resource | undefined = getResource(recipe[0].name)
+
+    let itemsCrafted: number = 0
+
+    while (recipe.length > 0) {
+        const canCraft: number = Math.floor(Number(amount) / recipe[0].recipe[0].amount)
+        //@ts-expect-error Goofy TS
+        const willGet: number = Math.floor(canCraft * (1 + resourceItem.chance_for_extra / 100))
+
+        itemsCrafted = willGet
+
+        recipe = getRecipes().filter(item => item.recipe.find(item => item.name == resourceItem?.slug))
+
+        if (recipe.length > 0) {
+            resourceItem = getResource(recipe[0].name)
+        } else {
+            break
         }
+    }
+
+    return {
+        itemsCrafted,
+        //@ts-expect-error Goofy TS
+        moneyInvested: getComponent(resource)?.market_price * amount,
+        itemsUsed: Number(amount),
+        //@ts-expect-error Goofy TS
+        revenue: getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted,
+        //@ts-expect-error Goofy TS
+        profit: getResource(final_item?.toString() ?? "")?.market_price * itemsCrafted - getComponent(resource)?.market_price * amount
     }
 }

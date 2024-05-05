@@ -3,7 +3,8 @@ export type resource = {
     slug: string,
     image: string,
     market_price: number,
-    chance_for_extra: number
+    chance_for_extra: number,
+    show: boolean
 }
 
 export type component = {
@@ -24,9 +25,9 @@ export type recipe = {
 }
 
 export type result = {
-    amountOfCoins: number,
-    costOfCoins: number,
-    charcoalAmount: number,
-    charcoalRevenue: number,
-    earnings: number
+    itemsCrafted: number,
+    moneyInvested: number,
+    itemsUsed: number,
+    revenue: number,
+    profit: number
 }
