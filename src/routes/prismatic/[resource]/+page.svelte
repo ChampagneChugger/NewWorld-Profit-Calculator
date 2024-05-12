@@ -182,7 +182,7 @@
 					<h1>Crafting Results</h1>
 					<div class="stats">
 						<h2>Total cost of materials: {result.totalCost}</h2>
-						<h2>{resource?.name}s crafted: {result.craftingItemToRecieve}</h2>
+						<h2>{resource?.name} crafted: {result.craftingItemToRecieve}</h2>
 						<h2>Revenue: {result.totalRevenue}</h2>
 						<h2 class:green={result.profitBeforeTax > 0} class:red={result.profitBeforeTax < 0}>
 							Profit before TP Tax: {result.profitBeforeTax}
