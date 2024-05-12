@@ -4,7 +4,8 @@ export type resource = {
     image: string,
     market_price: number,
     chance_for_extra: number,
-    show: boolean
+    show: boolean,
+    prismatic: boolean
 }
 
 export type component = {

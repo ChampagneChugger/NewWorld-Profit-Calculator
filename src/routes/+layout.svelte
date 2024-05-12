@@ -181,6 +181,58 @@
 					image: "lifewisp.png",
 					chance_for_extra: 10,
 					show: false
+				},
+				{
+					name: "Prismatic Ingot",
+					slug: "prismatic_ingot",
+					image: "prismaticingot.png",
+					chance_for_extra: 10,
+					show: true,
+					prismatic: true,
+					market_price: 208
+				},
+				{
+					name: "Prismatic Block",
+					slug: "prismatic_block",
+					image: "prismaticblock.png",
+					chance_for_extra: 10,
+					show: true,
+					prismatic: true,
+					market_price: 306
+				},
+				{
+					name: "Prismatic Leather",
+					slug: "prismatic_leather",
+					image: "prismaticleather.png",
+					chance_for_extra: 10,
+					show: true,
+					prismatic: true,
+					market_price: 218
+				},
+				{
+					name: "Prismatic Planks",
+					slug: "prismatic_planks",
+					image: "prismaticplanks.png",
+					chance_for_extra: 10,
+					show: true,
+					prismatic: true,
+					market_price: 198
+				},
+				{
+					name: "Prismatic Cloth",
+					slug: "prismatic_cloth",
+					image: "prismaticcloth.png",
+					chance_for_extra: 10,
+					show: true,
+					prismatic: true,
+					market_price: 215
+				},
+				{
+					name: "Asmodeum",
+					slug: "asmodeum",
+					image: "asmodeum.png",
+					chance_for_extra: 10,
+					show: false
 				}
 			])
 		)
@@ -193,6 +245,36 @@
 					slug: "wooden_coin",
 					image: "woodencoin.png",
 					market_price: 0.87
+				},
+				{
+					name: "Mythril Ingot",
+					slug: "mythril_ingot",
+					image: "mythrilingot.png",
+					market_price: 14
+				},
+				{
+					name: "Obsidian Flux",
+					slug: "obsidian_flux",
+					image: "obsidianflux.png",
+					market_price: 0.2
+				},
+				{
+					name: "Orichalcum Ingot",
+					slug: "orichalcum_ingot",
+					image: "oriingot.png",
+					market_price: 9
+				},
+				{
+					name: "Tolvium",
+					slug: "tolvium",
+					image: "tolvium.png",
+					market_price: 4
+				},
+				{
+					name: "Cinnabar",
+					slug: "cinnabar",
+					image: "cinnabar.png",
+					market_price: 4.1
 				},
 				{
 					name: "Death Mote",
@@ -437,6 +519,52 @@
 						{
 							name: "life_mote",
 							amount: 5
+						}
+					]
+				},
+				{
+					name: "prismatic_ingot",
+					recipe: [
+						{
+							name: "asmodeum",
+							amount: 1
+						},
+						{
+							name: "mythril_ingot",
+							amount: 10
+						},
+						{
+							name: "charcoal",
+							amount: 4
+						},
+						{
+							name: "obsidian_flux",
+							amount: 4
+						}
+					]
+				},
+				{
+					name: "asmodeum",
+					recipe: [
+						{
+							name: "orichalcum_ingot",
+							amount: 5
+						},
+						{
+							name: "tolvium",
+							amount: 1
+						},
+						{
+							name: "cinnabar",
+							amount: 1
+						},
+						{
+							name: "charcoal",
+							amount: 2
+						},
+						{
+							name: "obsidian_flux",
+							amount: 1
 						}
 					]
 				}

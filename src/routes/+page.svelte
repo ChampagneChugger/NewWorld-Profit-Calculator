@@ -16,14 +16,30 @@
 </svelte:head>
 
 <div class="home">
-	<h1>Select a resource</h1>
-	<div class="resources">
-		{#if items.length > 0}
-			{#each items as { name, slug, image, show }}
-				{#if show == true}
-					<Resource resource={{ name, slug, image }} />
+	<div class="resourcewrapper">
+		<div class="resourcesbox">
+			<h1>Normal items</h1>
+			<div class="resources">
+				{#if items.length > 0}
+					{#each items.filter((item) => !item.prismatic) as { name, slug, image, show }}
+						{#if show == true}
+							<Resource resource={{ name, slug, image }} />
+						{/if}
+					{/each}
 				{/if}
-			{/each}
-		{/if}
+			</div>
+		</div>
+		<div class="resourcesbox">
+			<h1>Prismatic items</h1>
+			<div class="resources">
+				{#if items.length > 0}
+					{#each items.filter((item) => item.prismatic) as { name, slug, image, show, prismatic }}
+						{#if show == true}
+							<Resource resource={{ name, slug, image, prismatic }} />
+						{/if}
+					{/each}
+				{/if}
+			</div>
+		</div>
 	</div>
 </div>

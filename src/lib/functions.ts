@@ -47,6 +47,30 @@ export function getComponentsForResource(resource: string): component[] {
     return componentsToReturn
 }
 
+export function getComponentsForPrismatic(resource: string): component[] & resource[] {
+    let recipe = getRecipe(resource)
+
+    const items: component[] & resource[] = []
+
+    if (recipe) {
+        for (const item of recipe) {
+            if (item.name == "asmodeum" || item.name == "runic_leather" || item.name == "phoenixweave" || item.name == "glittering_ebony" || item.name == "runestone") {
+                recipe = [...recipe, ...getRecipe(item.name) ?? []]
+            }
+        }
+
+        for (const item of recipe) {
+            const foundItem = getResource(item.name) ?? getComponent(item.name)
+
+            if (foundItem && !items.find(innerItem => innerItem.slug == item.name)) {
+                items.push(foundItem)
+            }
+        }
+    }
+
+    return items
+}
+
 export function getRelatedResourcesAndComponents(resource: string): resource[] {
     let recipeItem: recipe[] | undefined = getRecipe(resource)
     const resources: resource[] = []

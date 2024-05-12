@@ -1,13 +1,20 @@
 <script lang="ts">
-	export let resource = {
+	type resource = {
+		name: string
+		image: string
+		slug: string
+		prismatic?: boolean
+	}
+
+	export let resource: resource = {
 		name: "",
 		image: "",
-		slug: ""
+		slug: "",
+		prismatic: undefined
 	}
 </script>
 
-<a href="/{resource.slug}">
+<a href={resource.prismatic ? `/prismatic/${resource.slug}` : `/${resource.slug}`}>
 	<img src="/assets/{resource.image}" alt={resource.name} draggable="false" />
-	<hr />
 	<p>{resource.name}</p>
 </a>

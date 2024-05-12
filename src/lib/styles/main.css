@@ -33,8 +33,8 @@ body {
     align-items: center;
     flex-direction: column;
     gap: 40px;
-    height: 100vh;
     color: var(--color-text);
+    padding: 60px;
 }
 
 .home h1 {
@@ -42,11 +42,25 @@ body {
     letter-spacing: 2px;
 }
 
+.home .resourcewrapper {
+    display: grid;
+    grid-template-rows: auto;
+    gap: 100px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.home .resourcesbox {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .home .resources {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     gap: 25px;
+    overflow: auto;
 }
 
 .resources a {
@@ -63,19 +77,11 @@ body {
 }
 
 .resources a:hover {
-    transform: translateY(-3px);
     filter: brightness(1.2);
 }
 
 .resources a img {
-    width: 400px;
-}
-
-.resources a hr {
-    width: 100%;
-    border: 0px;
-    height: 1px;
-    background-color: var(--color-text);
+    max-width: 100%;
 }
 
 .resources a p {
