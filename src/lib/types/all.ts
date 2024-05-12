@@ -5,7 +5,8 @@ export type resource = {
     market_price: number,
     chance_for_extra: number,
     show: boolean,
-    prismatic: boolean
+    prismatic: boolean,
+    isResource: boolean
 }
 
 export type component = {
@@ -22,7 +23,8 @@ export type recipeItem = {
 
 export type recipe = {
     name: string,
-    amount: number
+    amount: number,
+    isResource: boolean
 }
 
 export type result = {
@@ -32,3 +34,19 @@ export type result = {
     revenue: number,
     profit: number
 }
+
+export type prismaticResult = {
+    totalCost: number,
+    craftingItemToRecieve: number,
+    totalRevenue: number,
+    profitBeforeTax: number,
+    extraMaterials?: material[]
+}
+
+type material = {
+    name: string,
+    amount: number,
+    extra_profit_per_one: number
+}
+
+export type componentORresource = component & resource

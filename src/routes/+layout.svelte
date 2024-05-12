@@ -3,7 +3,7 @@
 	import { onMount } from "svelte"
 	import { SvelteToast } from "@zerodevx/svelte-toast"
 
-	const version: string = "3"
+	const version: string = "5"
 
 	function checkLocalStorage() {
 		if (
@@ -232,7 +232,45 @@
 					slug: "asmodeum",
 					image: "asmodeum.png",
 					chance_for_extra: 10,
-					show: false
+					market_price: 39.39,
+					show: false,
+					isResource: true
+				},
+				{
+					name: "Runic Leather",
+					slug: "runic_leather",
+					image: "runicleather.png",
+					chance_for_extra: 10,
+					market_price: 44.93,
+					show: false,
+					isResource: true
+				},
+				{
+					name: "Phoenixweave",
+					slug: "phoenixweave",
+					image: "phoenixweave.png",
+					chance_for_extra: 10,
+					market_price: 47.49,
+					show: false,
+					isResource: true
+				},
+				{
+					name: "Glittering Ebony",
+					slug: "glittering_ebony",
+					image: "glitteringebony.png",
+					chance_for_extra: 10,
+					market_price: 18,
+					show: false,
+					isResource: true
+				},
+				{
+					name: "Runestone",
+					slug: "runestone",
+					image: "runestone.png",
+					chance_for_extra: 10,
+					market_price: 58.88,
+					show: false,
+					isResource: true
 				}
 			])
 		)
@@ -247,10 +285,124 @@
 					market_price: 0.87
 				},
 				{
+					name: "Obsidian Voidstone",
+					slug: "obsidian_voidstone",
+					image: "obsidianvoidstone.png",
+					market_price: 43.72
+				},
+				{
+					name: "Spinweave Cloth",
+					slug: "spinweave_cloth",
+					image: "spinweavecloth.png",
+					market_price: 16.67
+				},
+				{
+					name: "Wireweave",
+					slug: "wireweave",
+					image: "wireweave.png",
+					market_price: 0.11
+				},
+				{
+					name: "Infused Silk",
+					slug: "infusedsilk",
+					image: "infusedsilk.png",
+					market_price: 7.7
+				},
+				{
+					name: "Scalecloth",
+					slug: "scalecloth",
+					image: "scalecloth.png",
+					market_price: 3.46
+				},
+				{
+					name: "Blisterweave",
+					slug: "blisterweave",
+					image: "blisterweave.png",
+					market_price: 3.29
+				},
+				{
+					name: "Runewood Planks",
+					slug: "runewoodplanks",
+					image: "runewoodplanks.png",
+					market_price: 16.98
+				},
+				{
+					name: "Ironwood Planks",
+					slug: "ironwoodplanks",
+					image: "ironwoodplanks.png",
+					market_price: 9.97
+				},
+				{
+					name: "Runic Voidstone",
+					slug: "runicvoidstone",
+					image: "runicvoidstone.png",
+					market_price: 74.95
+				},
+				{
+					name: "Pure Solvent",
+					slug: "puresolvent",
+					image: "puresolvent.png",
+					market_price: 0.08
+				},
+				{
+					name: "Wildwood",
+					slug: "wildwood",
+					image: "wildwood.png",
+					market_price: 2.96
+				},
+				{
+					name: "Barbvine",
+					slug: "barbvine",
+					image: "barbvine.png",
+					market_price: 2.8
+				},
+				{
+					name: "Obsidian Sandpaper",
+					slug: "obsidiansandpaper",
+					image: "obsidiansandpaper.png",
+					market_price: 0.13
+				},
+				{
 					name: "Mythril Ingot",
 					slug: "mythril_ingot",
 					image: "mythrilingot.png",
 					market_price: 14
+				},
+				{
+					name: "Infused Leather",
+					slug: "infused_leather",
+					image: "infusedleather.png",
+					market_price: 6.67
+				},
+				{
+					name: "Smolderhide",
+					slug: "smolderhide",
+					image: "smolderhide.png",
+					market_price: 4.08
+				},
+				{
+					name: "Aged Tannin",
+					slug: "agedtannin",
+					image: "agedtannin.png",
+					market_price: 0.16
+				},
+				{
+					name: "Dark Leather",
+					slug: "darkleather",
+					image: "darkleather.png",
+					market_price: 13.98
+				},
+				{
+					name: "Gleaming Lodestone",
+					slug: "gleaminglodestone",
+					image: "gleaminglodestone.png",
+					market_price: 0.94
+				},
+				{
+					name: "Scarhide",
+					slug: "scarhide",
+					image: "scarhide.png",
+					market_price: 3.94
 				},
 				{
 					name: "Obsidian Flux",
@@ -527,7 +679,8 @@
 					recipe: [
 						{
 							name: "asmodeum",
-							amount: 1
+							amount: 1,
+							isResource: true
 						},
 						{
 							name: "mythril_ingot",
@@ -564,6 +717,158 @@
 						},
 						{
 							name: "obsidian_flux",
+							amount: 1
+						}
+					]
+				},
+				{
+					name: "prismatic_leather",
+					recipe: [
+						{
+							name: "runic_leather",
+							amount: 1,
+							isResource: true
+						},
+						{
+							name: "darkleather",
+							amount: 12
+						},
+						{
+							name: "agedtannin",
+							amount: 4
+						}
+					]
+				},
+				{
+					name: "runic_leather",
+					recipe: [
+						{
+							name: "infused_leather",
+							amount: 5
+						},
+						{
+							name: "smolderhide",
+							amount: 1
+						},
+						{
+							name: "scarhide",
+							amount: 1
+						},
+						{
+							name: "agedtannin",
+							amount: 1
+						}
+					]
+				},
+				{
+					name: "prismatic_cloth",
+					recipe: [
+						{
+							name: "phoenixweave",
+							amount: 1,
+							isResource: true
+						},
+						{
+							name: "spinweave_cloth",
+							amount: 10
+						},
+						{
+							name: "wireweave",
+							amount: 4
+						}
+					]
+				},
+				{
+					name: "phoenixweave",
+					recipe: [
+						{
+							name: "infusedsilk",
+							amount: 5
+						},
+						{
+							name: "scalecloth",
+							amount: 1
+						},
+						{
+							name: "blisterweave",
+							amount: 1
+						},
+						{
+							name: "wireweave",
+							amount: 1
+						}
+					]
+				},
+				{
+					name: "prismatic_planks",
+					recipe: [
+						{
+							name: "glittering_ebony",
+							amount: 1,
+							isResource: true
+						},
+						{
+							name: "runewoodplanks",
+							amount: 10
+						},
+						{
+							name: "obsidiansandpaper",
+							amount: 4
+						}
+					]
+				},
+				{
+					name: "glittering_ebony",
+					recipe: [
+						{
+							name: "ironwoodplanks",
+							amount: 5
+						},
+						{
+							name: "wildwood",
+							amount: 1
+						},
+						{
+							name: "barbvine",
+							amount: 1
+						},
+						{
+							name: "obsidiansandpaper",
+							amount: 1
+						}
+					]
+				},
+				{
+					name: "prismatic_block",
+					recipe: [
+						{
+							name: "runestone",
+							amount: 1,
+							isResource: true
+						},
+						{
+							name: "runicvoidstone",
+							amount: 5
+						},
+						{
+							name: "puresolvent",
+							amount: 4
+						}
+					]
+				},
+				{
+					name: "runestone",
+					recipe: [
+						{
+							name: "obsidian_voidstone",
+							amount: 5
+						},
+						{
+							name: "obsidiansandpaper",
+							amount: 1
+						},
+						{
+							name: "gleaminglodestone",
 							amount: 1
 						}
 					]

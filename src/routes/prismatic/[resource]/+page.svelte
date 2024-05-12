@@ -1,14 +1,22 @@
 <script lang="ts">
 	import Icon from "@iconify/svelte"
 	import { onMount } from "svelte"
-	import type { resource, component } from "$lib/types/all"
-	import { getResource, updateResource, getComponentsForPrismatic } from "$lib/functions"
+	import type { resource, componentORresource, prismaticResult } from "$lib/types/all"
+	import {
+		getResource,
+		updateResource,
+		getComponentsForPrismatic,
+		updatePrismaticComponents,
+		calculatePrismaticProfit
+	} from "$lib/functions"
 	import { page } from "$app/stores"
 	import { toast } from "@zerodevx/svelte-toast"
 
 	let resource: resource | undefined
-	let components: component[] & resource[] = []
-	let buttonState: "crafting" | "prices" = "prices"
+	let components: componentORresource[] = []
+	let buttonState: "crafting" | "prices" = "crafting"
+	let result: prismaticResult | undefined
+	let checked: boolean = false
 
 	onMount(() => {
 		getData()
@@ -24,6 +32,25 @@
 			updateResource(event)
 			getData()
 			toast.push("Updated resource price")
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+	function updatePrismaticComponentsForm(event: SubmitEvent) {
+		try {
+			updatePrismaticComponents(event)
+			getData()
+			toast.push("Updated prismatic component prices")
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+	function calculateProfitForm(event: SubmitEvent) {
+		try {
+			result = calculatePrismaticProfit(event)
+			console.log(result)
 		} catch (e) {
 			console.error(e)
 		}
@@ -47,8 +74,9 @@
 		<button
 			on:click={() => {
 				buttonState = "prices"
+				result = undefined
 			}}
-			class:active={buttonState == "prices"}>Prices</button
+			class:active={buttonState == "prices"}>Prices & Chances</button
 		>
 	</div>
 	{#if buttonState == "prices"}
@@ -84,7 +112,7 @@
 				</form>
 			</div>
 			<div class="components-wrapper">
-				<form on:submit|preventDefault={updateResourceForm}>
+				<form on:submit|preventDefault={updatePrismaticComponentsForm}>
 					<h1>Components Price</h1>
 					<div class="components">
 						{#each components as component}
@@ -97,7 +125,7 @@
 										<input
 											type="number"
 											step=".01"
-											name={component?.slug}
+											name={"marketprice-" + component?.slug}
 											value={component?.market_price}
 										/>
 									</div>
@@ -108,7 +136,7 @@
 										<input
 											type="number"
 											step=".01"
-											name="chance_for_extra"
+											name={"chanceforextra-" + component.slug}
 											value={component?.chance_for_extra}
 										/>
 									</div>
@@ -119,6 +147,63 @@
 					<button type="submit">Set prices</button>
 				</form>
 			</div>
+		</div>
+	{:else}
+		<div class="crafting-wrapper">
+			<div class="components-wrapper">
+				<form on:submit|preventDefault={calculateProfitForm}>
+					<h1>Profit Calculator</h1>
+					<div class="input-checkbox">
+						<input type="checkbox" name="craftingother" bind:checked />
+						<p>
+							Did you craft 10x {components.filter((item) => item.isResource)[0]?.name}?
+						</p>
+					</div>
+					{#if checked}
+						<div class="input-range checkedbox">
+							<p>
+								How many {components.filter((item) => item.isResource)[0]?.name} did you get?
+							</p>
+							<input type="number" name="itemamount" value="10" min="10" />
+						</div>
+					{/if}
+					<div class="input-range">
+						<p>How many {resource?.name.toLowerCase() + "s"} are you crafting?</p>
+						<div class="range-group checkedbox">
+							<input type="number" name="craftingamount" min="1" max="10" value="1" />
+						</div>
+					</div>
+					<input type="hidden" name="craftingitem" value={resource?.slug} />
+					<button type="submit">Calculate Profit</button>
+				</form>
+			</div>
+			{#if result}
+				<div class="components-wrapper">
+					<h1>Crafting Results</h1>
+					<div class="stats">
+						<h2>Total cost of materials: {result.totalCost}</h2>
+						<h2>{resource?.name}s crafted: {result.craftingItemToRecieve}</h2>
+						<h2>Revenue: {result.totalRevenue}</h2>
+						<h2 class:green={result.profitBeforeTax > 0} class:red={result.profitBeforeTax < 0}>
+							Profit before TP Tax: {result.profitBeforeTax}
+						</h2>
+						{#if result?.extraMaterials && result.extraMaterials.length > 0}
+							<h2>
+								Extra items:
+								{#each result.extraMaterials as { name, amount, extra_profit_per_one }}
+									{amount}
+									{name.charAt(0).toUpperCase() + name.slice(1)} ({(
+										extra_profit_per_one * amount
+									).toFixed(2)}g)
+								{/each}
+							</h2>
+							<span class="note"
+								>* Note - Profit from extra items is already included in the calculation</span
+							>
+						{/if}
+					</div>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>

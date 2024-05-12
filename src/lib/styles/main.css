@@ -57,7 +57,7 @@ body {
 
 .home .resources {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     gap: 25px;
     overflow: auto;
@@ -86,9 +86,10 @@ body {
 
 .resources a p {
     color: var(--color-text);
-    font-size: 26px;
+    font-size: 18px;
     font-weight: bold;
     letter-spacing: 1px;
+    text-align: center;
 }
 
 .back {
@@ -252,10 +253,88 @@ body {
     color: var(--color-text);
 }
 
+.stats h2 {
+    font-family: "Verdana";
+}
+
+.stats span {
+    font-family: "Verdana";
+}
+
+.stats .note {
+    font-family: "Verdana";
+    display: block;
+    color: red;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 30px;
+}
+
 .green {
     color: green;
 }
 
 .red {
     color: red;
+}
+
+.input-checkbox {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: var(--color-text);
+    margin-bottom: 20px;
+}
+
+.input-range {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--color-text);
+    margin-bottom: 20px;
+}
+
+.range-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.checkedbox input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--color-text);
+    background-color: transparent;
+    outline: none;
+    color: var(--color-text);
+    padding: 5px;
+    font-size: 17px;
+}
+
+@media screen and (max-width: 1380px) {
+    .home .resourcewrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    .home .resources {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .home .resources {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .home .resources {
+        grid-template-columns: 1fr;
+    }
+
+    .home {
+        padding: 40px 20px;
+    }
 }

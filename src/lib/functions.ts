@@ -1,4 +1,4 @@
-import type { resource, recipe, recipeItem, component, result } from "$lib/types/all"
+import type { resource, recipe, recipeItem, component, result, prismaticResult } from "$lib/types/all"
 
 export function getResources(): resource[] {
     return JSON.parse(localStorage.getItem("items") ?? "")
@@ -54,7 +54,7 @@ export function getComponentsForPrismatic(resource: string): component[] & resou
 
     if (recipe) {
         for (const item of recipe) {
-            if (item.name == "asmodeum" || item.name == "runic_leather" || item.name == "phoenixweave" || item.name == "glittering_ebony" || item.name == "runestone") {
+            if (item.isResource) {
                 recipe = [...recipe, ...getRecipe(item.name) ?? []]
             }
         }
@@ -142,6 +142,38 @@ export function updateComponents(event: SubmitEvent) {
     })
 }
 
+export function updatePrismaticComponents(event: SubmitEvent) {
+    const formElement: HTMLFormElement = event.target as HTMLFormElement
+
+    const formData = new FormData(formElement)
+
+    const resources = getResources()
+    const components = getComponents()
+
+    formData.forEach((value, name) => {
+        const splitValues = name.split("-")
+
+        const resourceIndex: number = resources.findIndex(item => item.slug == splitValues[1])
+
+        if (resourceIndex >= 0) {
+            if (splitValues[0] == "chanceforextra") {
+                resources[resourceIndex].chance_for_extra = Number(value)
+            } else {
+                resources[resourceIndex].market_price = Number(value)
+            }
+
+            localStorage.setItem("items", JSON.stringify(resources))
+        } else {
+            const componentIndex: number = components.findIndex(item => item.slug == splitValues[1])
+
+            components[componentIndex].market_price = Number(value)
+
+            localStorage.setItem("components", JSON.stringify(components))
+        }
+
+    })
+}
+
 export function calculateProfit(event: SubmitEvent): result {
     const formElement: HTMLFormElement = event.target as HTMLFormElement
 
@@ -152,6 +184,108 @@ export function calculateProfit(event: SubmitEvent): result {
     const [name, amount] = formData.entries().next().value
 
     return getStats(name, amount, final_item)
+}
+
+export function calculatePrismaticProfit(event: SubmitEvent): prismaticResult | undefined {
+    const formElement: HTMLFormElement = event.target as HTMLFormElement
+
+    const formData = new FormData(formElement)
+
+    const { craftingother, craftingitem, craftingamount, itemamount } = Object.fromEntries(formData) as {
+        craftingother: string,
+        craftingitem: string,
+        craftingamount: string,
+        itemamount: string
+    }
+
+    const resource = getResource(craftingitem)
+
+    if (resource) {
+        const recipe = getRecipe(craftingitem)
+
+        let totalCost: number = 0
+        const extraMaterials = []
+
+        if (craftingother) {
+            if (recipe) {
+                const other = recipe.find(item => item.isResource)?.name
+
+                if (other) {
+                    const otherInfo = getResource(other)
+                    const otherRecipe = getRecipe(other)
+
+                    // Calculate cost of crafting other item
+                    if (otherRecipe && otherInfo) {
+                        for (const item of otherRecipe) {
+                            const itemInfo = getResource(item.name) ?? getComponent(item.name)
+
+                            if (itemInfo) {
+                                totalCost += item.amount * itemInfo.market_price
+                            }
+                        }
+
+                        // Times 10 because above calculates for 1 asmodeum
+                        totalCost *= 10
+
+                        if (Number(itemamount) - 10 > 0) {
+                            extraMaterials.push({
+                                name: other,
+                                amount: Number(itemamount) - 10,
+                                extra_profit_per_one: otherInfo.market_price
+                            })
+                        }
+                    }
+                }
+
+                for (const item of recipe) {
+                    const itemInfo = getResource(item.name) ?? getComponent(item.name)
+
+                    if (itemInfo && itemInfo.slug != other) {
+                        totalCost += itemInfo?.market_price * item.amount * Number(craftingamount)
+                    }
+                }
+
+                totalCost = Number(totalCost.toFixed(2))
+                const craftingItemToRecieve: number = Math.round(Number(craftingamount) * (1 + (resource.chance_for_extra / 100)))
+                const totalRevenue: number = Number((craftingItemToRecieve * resource.market_price).toFixed(2))
+                let profitBeforeTax: number = Number((totalRevenue - totalCost).toFixed(2))
+
+                for (const extra of extraMaterials) {
+                    profitBeforeTax += Number((extra.amount * extra.extra_profit_per_one).toFixed(2))
+                }
+
+                return {
+                    totalCost,
+                    craftingItemToRecieve,
+                    totalRevenue,
+                    profitBeforeTax: Number(profitBeforeTax.toFixed(2)),
+                    extraMaterials
+                }
+            }
+        } else {
+            if (recipe) {
+                for (const item of recipe) {
+                    const itemInfo = getResource(item.name) ?? getComponent(item.name)
+
+                    if (itemInfo) {
+                        totalCost += itemInfo?.market_price * item.amount * Number(craftingamount)
+                    }
+                }
+            }
+
+            totalCost = Number(totalCost.toFixed(2))
+            const craftingItemToRecieve: number = Math.round(Number(craftingamount) * (1 + (resource.chance_for_extra / 100)))
+            const totalRevenue: number = Number((craftingItemToRecieve * resource.market_price).toFixed(2))
+            const profitBeforeTax: number = Number((totalRevenue - totalCost).toFixed(2))
+
+            return {
+                totalCost,
+                craftingItemToRecieve,
+                totalRevenue,
+                profitBeforeTax
+            }
+        }
+    }
 }
 
 function getStats(resource: string, amount: number, final_item: FormDataEntryValue | null): result {
